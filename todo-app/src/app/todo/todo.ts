@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 interface Task {
@@ -16,47 +16,41 @@ type Filter = 'All' | 'Active' | 'Completed';
   styleUrl: './todo.css',
 })
 export class Todo {
-  tasks = signal<Task[]>([
+  tasks: Task[] = [
     { id: 1, title: 'Learn Angular', completed: false },
     { id: 2, title: 'Build Todo App', completed: true },
-  ]);
+  ];
 
   newTaskTitle = '';
-  activeFilter = signal<Filter>('All');
+  activeFilter: Filter = 'All';
   nextId = 3;
 
-  filteredTasks = computed(() => {
-    const filter = this.activeFilter();
-    return this.tasks().filter((task) => {
-      if (filter === 'Active') return !task.completed;
-      if (filter === 'Completed') return task.completed;
+  get filteredTasks(): Task[] {
+    return this.tasks.filter((task) => {
+      if (this.activeFilter === 'Active') return !task.completed;
+      if (this.activeFilter === 'Completed') return task.completed;
       return true;
     });
-  });
+  }
 
-  addTask() {
+  addTask(): void {
     const title = this.newTaskTitle.trim();
     if (!title) return;
-    this.tasks.update((tasks) => [
-      ...tasks,
-      { id: this.nextId++, title, completed: false },
-    ]);
+    this.tasks = [...this.tasks, { id: this.nextId++, title, completed: false }];
     this.newTaskTitle = '';
   }
 
-  toggleTask(id: number) {
-    this.tasks.update((tasks) =>
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
+  toggleTask(id: number): void {
+    this.tasks = this.tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
     );
   }
 
-  deleteTask(id: number) {
-    this.tasks.update((tasks) => tasks.filter((task) => task.id !== id));
+  deleteTask(id: number): void {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
   }
 
-  setFilter(filter: Filter) {
-    this.activeFilter.set(filter);
+  setFilter(filter: Filter): void {
+    this.activeFilter = filter;
   }
 }
