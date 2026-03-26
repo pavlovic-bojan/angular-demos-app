@@ -1,0 +1,44 @@
+<div class="todo-app">
+  <h1>Todo App</h1>
+
+  <div class="add-task">
+    <input
+      [(ngModel)]="newTaskTitle"
+      (keyup.enter)="addTask()"
+      placeholder="Add a new task..."
+    />
+    <button (click)="addTask()">Add</button>
+  </div>
+
+  <div class="filters">
+    <button
+      [class.active]="activeFilter === 'All'"
+      (click)="setFilter('All')"
+    >All</button>
+    <button
+      [class.active]="activeFilter === 'Active'"
+      (click)="setFilter('Active')"
+    >Active</button>
+    <button
+      [class.active]="activeFilter === 'Completed'"
+      (click)="setFilter('Completed')"
+    >Completed</button>
+  </div>
+
+  @if (filteredTasks.length === 0) {
+    <p class="empty-state">No tasks yet.</p>
+  }
+
+  @for (task of filteredTasks; track task.id) {
+    <div class="task" [class.completed]="task.completed">
+      <span class="task-title">{{ task.title }}</span>
+      <span class="task-status">{{ task.completed ? 'Completed' : 'Active' }}</span>
+      <div class="task-actions">
+        <button (click)="toggleTask(task.id)">
+          {{ task.completed ? 'Undo' : 'Complete' }}
+        </button>
+        <button class="delete" (click)="deleteTask(task.id)">Delete</button>
+      </div>
+    </div>
+  }
+</div>
