@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Task } from '../models/task.model';
-import { Filter } from '../models/filter.model';
+import { Task, Filter } from '../models/task.model';
 
 @Component({
   selector: 'app-todo',
