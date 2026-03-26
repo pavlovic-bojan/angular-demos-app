@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-type Filter = 'All' | 'Active' | 'Completed';
+import { Task } from '../models/task.model';
+import { Filter } from '../models/filter.model';
 
 @Component({
   selector: 'app-todo',
